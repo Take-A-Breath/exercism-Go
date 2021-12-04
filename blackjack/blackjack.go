@@ -55,10 +55,10 @@ func LargeHand(isBlackjack bool, dealerScore int) string {
 	switch {
 	case isBlackjack && dealerScore < 10:
 		choice = "W"
-	case isBlackjack && dealerScore > 10:
-		choice = "S"
-	default:
+	case !isBlackjack:
 		choice = "P"
+	default:
+		choice = "S"
 	}
 	return choice
 }
@@ -70,12 +70,16 @@ func SmallHand(handScore, dealerScore int) string {
 	// If your cards sum up to a value within the range [12, 16] you should always stand unless the dealer has a 7 or higher, in which case you should always hit.
 	var choice string
 	switch {
-	case handScore <= 11 || handScore >= 12 && handScore <= 16 && dealerScore >= 7:
-		choice = "H"
-	case handScore == 17 || handScore >= 12 && handScore <= 16 && dealerScore < 7:
+	case handScore >= 17:
 		choice = "S"
+	case handScore <= 11:
+		choice = "H"
 	default:
-		choice = "P"
+		if dealerScore >= 7 {
+			choice = "H"
+		} else {
+			choice = "S"
+		}
 	}
 	return choice
 }
